@@ -1,6 +1,5 @@
 from datetime import datetime
 from decimal import Decimal
-
 import requests
 
 from models.bond import Bond
@@ -31,6 +30,11 @@ class MoexService:
         ]
 
     def get_bonds(self, board_id: str) -> list[Bond]:
+        """
+        Function to get bonds on specific board on moex
+        :param board_id: str
+        :return: list[Bond]
+        """
         columns = self._get_columns_list()
         columns_str = ",".join(columns)
         url = self.moex_bonds_base_url + f"{board_id}/securities.json?iss.meta=off&iss.only=securities&securities.columns={columns_str}"
@@ -51,12 +55,11 @@ class MoexService:
         return bonds
 
     def get_bond(self, isin, board_id: str) -> Bond:
-        # print("board_id ", board_id)
-        # print("isin ", isin)
+        assert DeprecationWarning("get_bond is deprecated", DeprecationWarning)
+
         columns = self._get_columns_list()
         columns_str = ",".join(columns)
-        url = self.moex_bonds_base_url + f"{board_id}/securities.json?iss.meta=off&iss.only=securities&securities.columns={columns_str}" # + \
-            # f"&//data[SECID={isin}]"
+        url = self.moex_bonds_base_url + f"{board_id}/securities.json?iss.meta=off&iss.only=securities&securities.columns={columns_str}"
 
         print(url)
 
@@ -85,7 +88,6 @@ class MoexService:
 
             end_date = next((item[3] for item in bond_info if item[0] == isin), None)
             face_value = next((item[4] for item in bond_info if item[0] == isin), None)
-
 
             return bond_price, coupon_period, end_date, face_value
 

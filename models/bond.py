@@ -40,7 +40,8 @@ class Bond:
                  board_id: Optional[str] = None,
                  offer_date: Optional[datetime] = None,
                  buy_back_date: Optional[datetime] = None,
-                 buy_back_price: Optional[Decimal] = None,):
+                 buy_back_price: Optional[Decimal] = None,
+                 ):
         self.isin = isin
         self.name = name
         self.issuer = issuer
