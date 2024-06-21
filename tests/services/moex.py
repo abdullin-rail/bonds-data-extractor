@@ -14,4 +14,3 @@ class TestMoexService:
         bonds = service.get_bonds(board_id=board)
         assert len(bonds) > 0
 
-        print(bonds[10].__dict__)

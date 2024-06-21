@@ -12,8 +12,8 @@ class MoexService:
 
     def get_boards(self) -> list[str]:
         return [
-            "TQOB", # Т+ Гособлигации
-            "TQCB", # Корпоративные
+            "TQOB", # Т+ Goverment bonds
+            "TQCB", # Corporate bonds
 
             # "TQOS"
             # "TQNO",
@@ -61,27 +61,14 @@ class MoexService:
         columns_str = ",".join(columns)
         url = self.moex_bonds_base_url + f"{board_id}/securities.json?iss.meta=off&iss.only=securities&securities.columns={columns_str}"
 
-        print(url)
-
         try:
             if self.cached_data == None:
                 response = requests.get(url)
                 response.raise_for_status()
-
-                # print("response ", response)
-                # Разбор полученных данных
                 self.cached_data = response.json()
-            # print("data ", self.cached_data)
 
-            # print("isin ", isin)
-
-            # Здесь нужно найти правильный путь к цене в ответе, это зависит от структуры данных
-            # Например, это может выглядеть так:
             bond_info = self.cached_data['securities']['data']
 
-            # print("bond_info ", bond_info)
-
-            # print("bond_info ", bond_info)
             bond_price = next((item[1] for item in bond_info if item[0] == isin), None)
 
             coupon_period = next((item[2] for item in bond_info if item[0] == isin), None)
